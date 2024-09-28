@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.2</version>
+    </parent>
+
+    <groupId>org.xlm</groupId>
+    <artifactId>dubbo-sentinel</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+
+    <name>dubbo-sentinel</name>
+    <description>dubbo-sentinel</description>
+    <properties>
+        <java.version>1.8</java.version>
+        <revision>2024-09-28-v1</revision>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <log4j2.version>2.18.0</log4j2.version>
+        <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
+        <spring-cloud-dependencies.version>2021.0.4</spring-cloud-dependencies.version>
+        <zookeeper.version>3.5.6</zookeeper.version>
+        <dubbo-version>2.7.23</dubbo-version>
+        <curator-version>5.1.0</curator-version>
+        <spring-boot.version>2.7.2</spring-boot.version>
+<!--        https://github.com/alibaba/spring-cloud-alibaba/wiki/版本说明-->
+<!--        https://blog.csdn.net/m0_53561907/article/details/139395391-->
+        <sentinel-version>2021.0.5.0</sentinel-version>
+        <sentinel-dubbo-adapter-version>1.8.6</sentinel-dubbo-adapter-version>
+    </properties>
+
+    <modules>
+        <module>user-service</module>
+        <module>file-service</module>
+        <module>common</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+<!--=============================================== spring ======================================================-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>${spring-boot.version}</version> <!-- 使用版本变量 -->
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring-boot.version}</version> <!-- 使用版本变量 -->
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring-boot.version}</version> <!-- 使用版本变量 -->
+                <scope>test</scope>
+            </dependency>
+<!--======================================================= dubbo =========================================================-->
+            <!-- https://mvnrepository.com/artifact/org.apache.dubbo/dubbo-spring-boot-starter -->
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-spring-boot-starter</artifactId>
+                <version>${dubbo-version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.dubbo/dubbo-serialization-kryo -->
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-serialization-kryo</artifactId>
+                <version>${dubbo-version}</version>
+                <!--           fastjson 1.2.68 ≤1.2.80 漏洞-->
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.alibaba</groupId>
+                        <artifactId>fastjson</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.dubbo</groupId>
+                        <artifactId>dubbo-common</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.zookeeper</groupId>
+                <artifactId>zookeeper</artifactId>
+                <version>${zookeeper.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-reload4j</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <!-- dubbo 需要 curator -->
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-framework</artifactId>
+                <version>${curator-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-recipes</artifactId>
+                <version>${curator-version}</version>
+            </dependency>
+<!--=================================================== sentinel =============================================-->
+            <!-- sentinel -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+                <version>${sentinel-version}</version>
+            </dependency>
+
+            <!-- 适配 dubbo 框架，里面带了 sentinel-core -->
+            <dependency>
+                <groupId>com.alibaba.csp</groupId>
+                <artifactId>sentinel-apache-dubbo-adapter</artifactId>
+                <version>${sentinel-dubbo-adapter-version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

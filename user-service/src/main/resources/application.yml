@@ -1,0 +1,37 @@
+server:
+  port: 8082
+  servlet:
+    context-path: /user-service
+
+spring:
+  cloud:
+    sentinel:
+      eager: true  #是否开启网关限流，默认true
+      transport:
+        # 添加sentinel的控制台地址
+        dashboard: 127.0.0.1:8888
+        #指定应用与Sentinel控制台交互的端口，应用本地会起一个该端口占用的HttpServer
+        port: 8719
+      web-context-unify: false # 默认将调用链路收敛，导致链路流控效果无效
+
+dubbo:
+  scan:
+    base-packages: org.xlm.userservice
+  application:
+    id: user-service
+    name: user-service
+    qos-port: 33337
+    qos-enable: true
+    qos-accept-foreign-ip: false
+  protocol:
+    id: user-service
+    name: dubbo
+    port: 12348
+    serialization: kryo
+  registry:
+    id: zookeeper-userDev
+    address: zookeeper://192.168.187.135:2181?timeout=300000
+  consumer:
+    timeout: 30000
+    group: demo_dev
+    check: false
